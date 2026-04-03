@@ -72,7 +72,11 @@ function App() {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const wsUrl = import.meta.env.VITE_WS_URL || "ws://localhost:3001/ws";
+    const defaultWsUrl =
+      typeof window !== "undefined"
+        ? `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/ws`
+        : "ws://localhost:3001/ws";
+    const wsUrl = import.meta.env.VITE_WS_URL || defaultWsUrl;
     const socket = new WebSocket(wsUrl);
     wsRef.current = socket;
 
